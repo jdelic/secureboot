@@ -25,7 +25,7 @@ MODULES="$MODULES search search_fs_uuid"       # search --fs-uuid
 MODULES="$MODULES reboot sleep"                # sleep, reboot
 MODULES="$MODULES gzio test font gfxterm"      # others that I found missing
 MODULES="$MODULES gfxterm_menu gfxterm_background"
-MODULES="$MODULES gfxmenu"
+MODULES="$MODULES gfxmenu efifwsetup"
 
 SECTEMP=$(mktemp -d)
 TMP_GPG_KEY="$SECTEMP/gpg.key"
