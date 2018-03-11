@@ -1,4 +1,5 @@
-# commands
+commands
+========
 
 .. code-block::
 
@@ -32,4 +33,10 @@ After running `make-initial-grub.sh` add the signed GRUB UEFI loader like this:
 Once Secure Boot is enabled, only this UEFI entry will work. I would leave the
 "Debian package managed" UEFI entry alone. It can be useful to boot the system
 after turning Secure Boot off in the BIOS for a rescue attempt.
+
+
+References
+----------
+
+* https://ruderich.org/simon/notes/secure-boot-with-grub-and-signed-linux-and-initrd
 
