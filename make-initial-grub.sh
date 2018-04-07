@@ -67,3 +67,12 @@ for x in "/boot/grub/grub.cfg" "/boot/vmlinuz"* "/boot/initrd"*; do
 done
 
 rm -rf "$SECTEMP"
+
+# sanity check to ensure that Debian hasn't (yet again) deleted the "debian signed" entry
+if ! efibootmgr --verbose | grep signed; then
+    echo ""
+    echo "***************************************************************"
+    echo "ALERT!!! No signed boot entry in EFI boot config"
+    echo "***************************************************************"
+    echo ""
+fi
