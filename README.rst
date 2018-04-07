@@ -28,7 +28,10 @@ After running `make-initial-grub.sh` add the signed GRUB UEFI loader like this:
 
 .. code-block::
 
-    efibootmgr -c -l '\EFI\debian\grubx64_signed.efi' -L "debian signed" -w -p 1 -d /dev/nvme0n1
+    # -e 3 will create an entry of the form "PciRoot(0x0)/Pci(...)" which is like Dell's BIOS does it, too.
+    # Dell's BIOS tends to "lose" UEFI entries once you plug in a UEFI USB stick when they're in a different
+    # form.
+    efibootmgr -c -l '\EFI\debian\grubx64_signed.efi' -L "debian signed" -e 3 -w -p 1 -d /dev/nvme0n1
 
 Once Secure Boot is enabled, only this UEFI entry will work. I would leave the
 "Debian package managed" UEFI entry alone. It can be useful to boot the system
