@@ -77,6 +77,6 @@ if ! efibootmgr --verbose | grep signed; then
     echo ""
     echo "You probably want to delete the current entries and create new ones:"
     echo "    efibootmgr -B -b 0000"
-    echo "    efibootmgr -c -l '\\EFI\\debian\\grubx64_signed.efi' -L "debian signed" -e 3 -w -p 1 -d /dev/nvme0n1"
-    echo "    efibootmgr -c -l '\\EFI\\debian\\grubx64.efi' -L "debian" -e 3 -w -p 1 -d /dev/nvme0n1"
+    echo "    efibootmgr -c -l '\\EFI\\debian\\grubx64_signed.efi' -L \"debian signed\" -e 3 -w -p 1 -d /dev/nvme0n1"
+    echo "    efibootmgr -c -l '\\EFI\\debian\\grubx64.efi' -L \"debian\" -e 3 -w -p 1 -d /dev/nvme0n1"
 fi
