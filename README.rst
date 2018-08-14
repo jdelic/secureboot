@@ -7,7 +7,7 @@ commands
     openssl genrsa -aes256 -out KEK.key 2048
     openssl genrsa -aes256 -out PK.key 2048
 
-    openssl req -new -x509 -key db.key -subj '/O=maurus.networks GmbH/CN=XPS13_2 db/' -out db.cr
+    openssl req -new -x509 -key db.key -subj '/O=maurus.networks GmbH/CN=XPS13_2 db/' -out db.crt
     openssl req -new -x509 -key KEK.key -subj '/O=maurus.networks GmbH/CN=XPS13_2 KEK/' -out KEK.crt
     openssl req -new -x509 -key PK.key -subj '/O=maurus.networks GmbH/CN=XPS13_2 PK/' -out PK.crt
 
