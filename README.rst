@@ -24,14 +24,14 @@ the EFI vfat partitions and clicking "import" in the BIOS.
 
 Use 1000000 PBKDF2 iterations for the grub2 user password.
 
-After running `make-initial-grub.sh` add the signed GRUB UEFI loader like this:
+After running `build-secureboot.sh` add the signed GRUB UEFI loader like this:
 
 .. code-block::
 
     # -e 3 will create an entry of the form "PciRoot(0x0)/Pci(...)" which is like Dell's BIOS does it, too.
     # Dell's BIOS tends to "lose" UEFI entries once you plug in a UEFI USB stick when they're in a different
     # form.
-    efibootmgr -c -l '\EFI\debian\grubx64_signed.efi' -L "debian signed" -e 3 -w -p 1 -d /dev/nvme0n1
+    efibootmgr -c -l '\EFI\debian\shimx64.efi.signed' -L "debian secureboot" -e 3 -w -p 1 -d /dev/nvme0n1
 
 Once Secure Boot is enabled, only this UEFI entry will work. I would leave the
 "Debian package managed" UEFI entry alone. It can be useful to boot the system

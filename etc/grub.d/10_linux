@@ -176,7 +176,7 @@ EOF
   fi
   if test -d /sys/firmware/efi && test -e "${linux}.efi.signed"; then
     sed "s/^/$submenu_indentation/" << EOF
-	linux	${rel_dirname}/${basename}.efi.signed root=${linux_root_device_thisversion} ro ${args}
+	linuxefi	${rel_dirname}/${basename}.efi.signed root=${linux_root_device_thisversion} ro ${args}
 EOF
   else
     sed "s/^/$submenu_indentation/" << EOF
@@ -191,7 +191,12 @@ EOF
 	echo	'$(echo "$message" | grub_quote)'
 EOF
     fi
-    sed "s/^/$submenu_indentation/" << EOF
+    if test -d /sys/firmware/efi && test -e "${linux}.efi.signed"; then
+      sed "s/^/$submenu_indentation/" << EOF
+          initrdefi	${rel_dirname}/${initrd}
+EOF
+    else
+      sed "s/^/$submenu_indentation/" << EOF
 	initrd	${rel_dirname}/${initrd}
 EOF
   fi
