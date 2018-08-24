@@ -76,32 +76,27 @@ cp "$TMP_SHIM_EFI" "$TARGET_SHIM_EFI"
 
 rm -rf $SECTEMP
 
-# SIGN THE KERNEL WITH THE MOK
-# ============================
+# SIGN THE CURRENT KERNEL WITH THE MOK
+# ====================================
 # EFI sign the existing kernel
-for x in "/boot/vmlinuz"*; do
-    if [[ "$x" != *.signed ]] && [[ "$x" != *.sig ]]; then 
-        name="$(basename "$x")"
-
-        echo "EFI signing '$x' to '$(dirname "$x")'"
-	rm -f "$(dirname "$x")/$name.signed"
-	sbsign --key "$SECUREBOOT_DB_KEY" --cert "$SECUREBOOT_DB_CRT" \
-            --output "$(dirname "$x")/$name.efi.signed" "$(dirname "$x")/$name"
-    fi
-done
+rm -f /boot/*.signed.sig
+rm -f /boot/*.signed
+CURKERNEL="/$(readlink /vmlinuz)"
+name="$(basename "$CURKERNEL")"
+echo "EFI signing '$CURKERNEL' to '$(dirname "$CURKERNEL")'"
+rm -f "$(dirname "$CURKERNEL")/$name.signed"
+sbsign --key "$SECUREBOOT_DB_KEY" --cert "$SECUREBOOT_DB_CRT" \
+    --output "$(dirname "$CURKERNEL")/$name.efi.signed" "$(dirname "$CURKERNEL")/$name"
 
 # NOW FINALLY SIGN KERNEL AND INITRD WITH THE GPG KEY EMBEDDED IN THE 
 # STANDALONE GRUB
 # ===================================================================
 # sign the existing kernel
-for x in "/boot/grub/grub.cfg" "/boot/vmlinuz"*.signed "/boot/initrd"*; do
-    if [[ "$x" != *.sig ]]; then 
-        name="$(basename "$x")"
-
-        echo "GPG signing '$x' to '$(dirname "$x")'"
-        rm -f "$(dirname "$x")/$name.sig"
-        gpg --default-key "$GPG_KEY" --detach-sign "$(dirname "$x")/$name"
-    fi
+for x in "/boot/grub/grub.cfg" "$CURKERNEL.efi.signed" "/$(readlink /initrd.img)"; do
+    name="$(basename "$x")"
+    echo "GPG signing '$x' to '$(dirname "$x")'"
+    rm -f "$(dirname "$x")/$name.sig"
+    gpg --default-key "$GPG_KEY" --detach-sign "$(dirname "$x")/$name"
 done
 
 # VERIFY THAT THE SIGNED SHIM IS REGISTERED IN THE EFI AND THAT WE HAVE A 
