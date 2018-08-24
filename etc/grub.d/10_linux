@@ -199,6 +199,7 @@ EOF
       sed "s/^/$submenu_indentation/" << EOF
 	initrd	${rel_dirname}/${initrd}
 EOF
+    fi
   fi
   sed "s/^/$submenu_indentation/" << EOF
 }
