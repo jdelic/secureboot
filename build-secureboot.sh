@@ -12,7 +12,6 @@ GPG_KEY='7CDC4589'
 TARGET_GRUB_EFI='/boot/efi/EFI/debian/grubx64.efi'
 TARGET_SHIM_EFI='/boot/efi/EFI/debian/shimx64.efi.signed'
 SOURCE_SHIM='/usr/lib/shim/shimx64.efi'
-SOURCE_GRUB='/boot/efi/EFI/debian/grubx64_signed.efi'
 SECUREBOOT_DB_KEY='/home/jonas/jm/rescue/xps13_2/db.key'
 SECUREBOOT_DB_CRT='/home/jonas/jm/rescue/xps13_2/db.crt'
 
@@ -34,6 +33,7 @@ MODULES="$MODULES gfxterm_menu gfxterm_background"
 MODULES="$MODULES gfxmenu efifwsetup"
 
 SECTEMP=$(mktemp -d)
+SOURCE_GRUB="$SECTEMP/grubx64_signed.efi"
 TMP_GPG_KEY="$SECTEMP/gpg.key"
 TMP_GRUB_CFG="$SECTEMP/grub-initial.cfg"
 TMP_GRUB_SIG="$TMP_GRUB_CFG.sig"
@@ -51,14 +51,14 @@ grub-mkstandalone \
     --format x86_64-efi \
     --modules "$MODULES" \
     --pubkey "$TMP_GPG_KEY" \
-    --output "$TMP_GRUB_EFI" \
+    --output "$SOURCE_GRUB" \
     "boot/grub/grub.cfg=$TMP_GRUB_CFG" \
     "boot/grub/grub.cfg.sig=$TMP_GRUB_SIG"
 
 # sign the initial standalone grub with the Machine Owner Key (MOK)
 echo "EFI: Signing the GRUB bootloader"
 sbsign --key "$SECUREBOOT_DB_KEY" --cert "$SECUREBOOT_DB_CRT" \
-    --output "$SOURCE_GRUB" "$TMP_GRUB_EFI"
+    --output "$TMP_GRUB_EFI" "$SOURCE_GRUB"
 
 # CREATE A SIGNED SHIM THAT LOADS THE MOK FROM UEFI AND VERIFIES FIRST
 # GRUB AND THEN THE KERNEL
