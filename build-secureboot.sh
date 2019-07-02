@@ -11,7 +11,9 @@ GPG_KEY='7CDC4589'
 # Target Grub must be named grubx64.efi, because that's compiled into the shim
 TARGET_GRUB_EFI='/boot/efi/EFI/debian/grubx64.efi'
 TARGET_SHIM_EFI='/boot/efi/EFI/debian/shimx64.efi.signed'
+TARGET_MOKMGR_EFI='/boot/efi/EFI/debian/mmx64.efi'
 SOURCE_SHIM='/usr/lib/shim/shimx64.efi'
+SOURCE_MOKMGR='/usr/lib/shim/mmx64.efi.signed'
 SECUREBOOT_DB_KEY='/home/jonas/jm/rescue/xps13_2/db.key'
 SECUREBOOT_DB_CRT='/home/jonas/jm/rescue/xps13_2/db.crt'
 
@@ -73,6 +75,8 @@ echo "writing signed grub.efi to '$TARGET_GRUB_EFI'"
 cp "$TMP_GRUB_EFI" "$TARGET_GRUB_EFI"
 echo "writing signed shim efi to '$TARGET_SHIM_EFI'"
 cp "$TMP_SHIM_EFI" "$TARGET_SHIM_EFI"
+echo "writing signed mokmgr efi to '$TARGET_MOKMGR_EFI'"
+cp "$SOURCE_MOKMGR" "$TARGET_MOKMGR_EFI"
 
 rm -rf $SECTEMP
 
